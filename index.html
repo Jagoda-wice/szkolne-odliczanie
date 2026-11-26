@@ -3,74 +3,348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Odliczanie – SP12 Szczecin</title>
+<title>Wielkie odliczanie – SP12 Szczecin</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{
- font-family:"Segoe UI",Arial,sans-serif;color:#fff;
- background:radial-gradient(circle at 18% 15%,#284f78 0,transparent 34%),
- radial-gradient(circle at 85% 80%,#174e53 0,transparent 35%),
- linear-gradient(135deg,#071a31,#102b49 55%,#071c32);
- display:flex;align-items:center;justify-content:center
-}
-.wrap{width:100%;height:100%;padding:4.5vh 3.6vw;display:flex;flex-direction:column;justify-content:space-between}
-header{text-align:center}
-.school{font-size:clamp(16px,1.7vw,27px);letter-spacing:.16em;text-transform:uppercase;color:#c9dced}
-h1{margin:1vh 0 0;font-size:clamp(32px,3.6vw,58px);font-weight:700}
-.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5vw;align-items:stretch}
-.card{min-height:47vh;padding:3.4vh 1.3vw;border-radius:26px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.19);box-shadow:0 20px 55px rgba(0,0,0,.2);text-align:center;display:flex;flex-direction:column;justify-content:center;backdrop-filter:blur(8px)}
-.emoji{font-size:clamp(34px,4vw,62px);margin-bottom:1vh}
-.card h2{font-size:clamp(21px,2.05vw,34px);line-height:1.15;min-height:2.3em;margin:0 0 .7vh}
-.date{color:#c8d9e9;font-size:clamp(14px,1.2vw,19px);min-height:2.5em;margin-bottom:2.3vh}
-.numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:.45vw}
-.unit{background:rgba(3,15,29,.36);border-radius:12px;padding:1.5vh .2vw}
-.value{display:block;font-size:clamp(23px,2.8vw,44px);font-weight:750;font-variant-numeric:tabular-nums}
-.label{display:block;margin-top:.45vh;color:#c8d9e9;font-size:clamp(10px,.85vw,14px)}
-footer{text-align:center;color:#b8cde0;font-size:clamp(13px,1.1vw,18px);letter-spacing:.04em}
-@media(max-width:800px){html,body{overflow:auto}.wrap{min-height:100%;height:auto;gap:20px;padding:24px 16px}.counters{grid-template-columns:1fr;gap:16px}.card{min-height:260px;padding:24px 14px}.value{font-size:clamp(27px,8vw,42px)}}
+  :root {
+    --ink: #ffffff;
+    --muted: #d7e5f3;
+    --panel: rgba(255,255,255,.105);
+    --panel-border: rgba(255,255,255,.22);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow: hidden;
+    color: var(--ink);
+    font-family: "Segoe UI", Arial, sans-serif;
+    background:
+      radial-gradient(ellipse at 12% 8%, rgba(52,119,174,.48), transparent 34%),
+      radial-gradient(ellipse at 92% 88%, rgba(26,121,112,.36), transparent 32%),
+      linear-gradient(125deg, #06172c 0%, #102e4c 52%, #071b31 100%);
+  }
+
+  .page {
+    width: 100%;
+    height: 100vh;
+    min-height: 700px;
+    padding: 3.2vh 3.2vw 2.4vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2.1vh;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .page::before, .page::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .page::before {
+    width: 390px; height: 390px;
+    top: -230px; right: 12%;
+  }
+
+  .page::after {
+    width: 520px; height: 520px;
+    bottom: -390px; left: 7%;
+  }
+
+  header {
+    text-align: center;
+    flex: 0 0 auto;
+  }
+
+  .school {
+    color: #c9dced;
+    font-size: clamp(18px, 1.35vw, 27px);
+    font-weight: 700;
+    letter-spacing: .19em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: .55vh 0 .35vh;
+    font-size: clamp(42px, 3.2vw, 62px);
+    line-height: 1.08;
+    letter-spacing: .015em;
+    font-weight: 850;
+    text-shadow: 0 4px 22px rgba(0,0,0,.24);
+  }
+
+  .intro {
+    margin: 0;
+    color: #d6e5f3;
+    font-size: clamp(17px, 1.25vw, 24px);
+    letter-spacing: .025em;
+  }
+
+  main {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.45vw;
+    align-items: stretch;
+  }
+
+  .card {
+    --accent: #8bd5ff;
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    padding: 3.1vh 1.55vw 2.6vh;
+    border-radius: 30px;
+    border: 1px solid var(--panel-border);
+    background: linear-gradient(160deg, rgba(255,255,255,.15), rgba(255,255,255,.065));
+    box-shadow: 0 22px 55px rgba(0,0,0,.24);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    top: -145px;
+    right: -100px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: .16;
+  }
+
+  .christmas { --accent: #ffcf70; }
+  .newyear { --accent: #a8c9ff; }
+  .summer { --accent: #8ce2b5; }
+
+  .symbol {
+    width: clamp(78px, 6.5vw, 120px);
+    height: clamp(78px, 6.5vw, 120px);
+    display: grid;
+    place-items: center;
+    border-radius: 28px;
+    margin-bottom: 1.6vh;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+    font-size: clamp(48px, 4.1vw, 76px);
+    line-height: 1;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,.18));
+  }
+
+  .card h2 {
+    min-height: 2.25em;
+    max-width: 95%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(25px, 2vw, 38px);
+    line-height: 1.12;
+    font-weight: 800;
+  }
+
+  .date {
+    margin: 1.1vh 0 2.3vh;
+    color: var(--accent);
+    font-size: clamp(26px, 2.05vw, 39px);
+    font-weight: 850;
+    letter-spacing: .025em;
+  }
+
+  .count-label {
+    color: #d7e5f3;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    font-size: clamp(18px, 1.35vw, 26px);
+    font-weight: 850;
+    margin-bottom: .3vh;
+  }
+
+  .days {
+    font-size: clamp(76px, 7.1vw, 132px);
+    line-height: .98;
+    font-weight: 900;
+    letter-spacing: -.055em;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 8px 24px rgba(0,0,0,.22);
+  }
+
+  .days-word {
+    color: var(--accent);
+    font-size: clamp(19px, 1.45vw, 27px);
+    font-weight: 800;
+    margin: .35vh 0 2.5vh;
+  }
+
+  .time {
+    width: 100%;
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .55vw;
+  }
+
+  .unit {
+    min-width: 0;
+    padding: 1.35vh .35vw 1.15vh;
+    border-radius: 15px;
+    background: rgba(2,13,27,.38);
+    border: 1px solid rgba(255,255,255,.08);
+  }
+
+  .value {
+    display: block;
+    font-size: clamp(27px, 2.25vw, 43px);
+    line-height: 1.05;
+    font-weight: 850;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    display: block;
+    margin-top: .5vh;
+    color: #c7d9e9;
+    font-size: clamp(12px, .85vw, 16px);
+    font-weight: 650;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+  }
+
+  footer {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: .6vh 0 0;
+    color: #ffffff;
+    font-size: clamp(22px, 1.8vw, 34px);
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .025em;
+    text-shadow: 0 3px 14px rgba(0,0,0,.24);
+  }
+
+  @media (max-width: 1050px) {
+    body { overflow: auto; }
+    .page { height: auto; min-height: 100vh; padding: 24px 18px; gap: 22px; }
+    main { grid-template-columns: 1fr; gap: 18px; }
+    .card { min-height: 490px; padding: 28px 22px; }
+    .card h2 { min-height: 0; }
+    .days { font-size: clamp(82px, 16vw, 125px); }
+    .value { font-size: clamp(30px, 7vw, 44px); }
+    footer { padding: 12px 0; }
+  }
+
+  @media (max-height: 800px) and (min-width: 1051px) {
+    .page { min-height: 620px; padding-top: 2vh; padding-bottom: 1.5vh; gap: 1.3vh; }
+    .symbol { width: 70px; height: 70px; font-size: 43px; margin-bottom: .8vh; }
+    .card { padding-top: 2vh; padding-bottom: 1.8vh; }
+    .card h2 { font-size: clamp(22px, 1.75vw, 32px); }
+    .date { margin: .7vh 0 1.3vh; font-size: clamp(24px, 1.9vw, 36px); }
+    .count-label { font-size: clamp(17px, 1.2vw, 23px); }
+    .days { font-size: clamp(68px, 6.2vw, 112px); }
+    .days-word { margin-bottom: 1.4vh; }
+    .unit { padding: 1vh .3vw; }
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-<div class="school">Szkoła Podstawowa nr 12 w Szczecinie</div>
-<h1>Wielkie odliczanie!</h1>
-</header>
-<main class="counters">
-<section class="card">
-<div class="emoji">🎄</div><h2>Święta Bożego Narodzenia</h2>
-<div class="date">24 grudnia 2026 r.</div>
-<div class="numbers" id="christmas"><div class="unit"><span class="value">—</span><span class="label">dni</span></div><div class="unit"><span class="value">—</span><span class="label">godz.</span></div><div class="unit"><span class="value">—</span><span class="label">min.</span></div><div class="unit"><span class="value">—</span><span class="label">sek.</span></div></div>
-</section>
-<section class="card">
-<div class="emoji">🎆</div><h2>Koniec roku kalendarzowego</h2>
-<div class="date">31 grudnia 2026 r.</div>
-<div class="numbers" id="newyear"><div class="unit"><span class="value">—</span><span class="label">dni</span></div><div class="unit"><span class="value">—</span><span class="label">godz.</span></div><div class="unit"><span class="value">—</span><span class="label">min.</span></div><div class="unit"><span class="value">—</span><span class="label">sek.</span></div></div>
-</section>
-<section class="card">
-<div class="emoji">🎓</div><h2>Koniec roku szkolnego</h2>
-<div class="date">25 czerwca 2027 r.</div>
-<div class="numbers" id="summer"><div class="unit"><span class="value">—</span><span class="label">dni</span></div><div class="unit"><span class="value">—</span><span class="label">godz.</span></div><div class="unit"><span class="value">—</span><span class="label">min.</span></div><div class="unit"><span class="value">—</span><span class="label">sek.</span></div></div>
-</section>
-</main>
-<footer>Każdy dzień przybliża nas do miłych chwil! ✨</footer>
+<div class="page">
+  <header>
+    <div class="school">Szkoła Podstawowa nr 12 w Szczecinie</div>
+    <h1>Wielkie odliczanie!</h1>
+    <p class="intro">Przed nami wyjątkowe chwile – sprawdź, ile czasu pozostało!</p>
+  </header>
+
+  <main>
+    <section class="card christmas">
+      <div class="symbol" aria-hidden="true">🎄</div>
+      <h2>Święta Bożego Narodzenia</h2>
+      <div class="date">24 grudnia 2026 r.</div>
+      <div class="count-label">Pozostało</div>
+      <div class="days" id="christmas-days">—</div>
+      <div class="days-word">dni</div>
+      <div class="time" id="christmas-time">
+        <div class="unit"><span class="value">—</span><span class="label">godzin</span></div>
+        <div class="unit"><span class="value">—</span><span class="label">minut</span></div>
+        <div class="unit"><span class="value">—</span><span class="label">sekund</span></div>
+      </div>
+    </section>
+
+    <section class="card newyear">
+      <div class="symbol" aria-hidden="true">🎆</div>
+      <h2>Koniec roku kalendarzowego</h2>
+      <div class="date">31 grudnia 2026 r.</div>
+      <div class="count-label">Pozostało</div>
+      <div class="days" id="newyear-days">—</div>
+      <div class="days-word">dni</div>
+      <div class="time" id="newyear-time">
+        <div class="unit"><span class="value">—</span><span class="label">godzin</span></div>
+        <div class="unit"><span class="value">—</span><span class="label">minut</span></div>
+        <div class="unit"><span class="value">—</span><span class="label">sekund</span></div>
+      </div>
+    </section>
+
+    <section class="card summer">
+      <div class="symbol" aria-hidden="true">☀️</div>
+      <h2>Zakończenie roku szkolnego</h2>
+      <div class="date">25 czerwca 2027 r.</div>
+      <div class="count-label">Pozostało</div>
+      <div class="days" id="summer-days">—</div>
+      <div class="days-word">dni</div>
+      <div class="time" id="summer-time">
+        <div class="unit"><span class="value">—</span><span class="label">godzin</span></div>
+        <div class="unit"><span class="value">—</span><span class="label">minut</span></div>
+        <div class="unit"><span class="value">—</span><span class="label">sekund</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Każdy dzień przybliża nas do miłych chwil! ✨</footer>
 </div>
+
 <script>
-function update(id,target){
- let diff=Math.max(0,new Date(target)-new Date());
- const d=Math.floor(diff/86400000);diff%=86400000;
- const h=Math.floor(diff/3600000);diff%=3600000;
- const m=Math.floor(diff/60000);diff%=60000;
- const s=Math.floor(diff/1000);
- [d,h,m,s].forEach((v,i)=>document.querySelectorAll('#'+id+' .value')[i].textContent=String(v).padStart(2,'0'));
-}
-function tick(){
- update('christmas','2026-12-24T00:00:00');
- update('newyear','2027-01-01T00:00:00');
- update('summer','2027-06-25T00:00:00');
-}
-tick();setInterval(tick,1000);
+  function updateCountdown(prefix, targetDate) {
+    const now = new Date();
+    let remaining = Math.max(0, new Date(targetDate).getTime() - now.getTime());
+
+    const days = Math.floor(remaining / 86400000);
+    remaining %= 86400000;
+    const hours = Math.floor(remaining / 3600000);
+    remaining %= 3600000;
+    const minutes = Math.floor(remaining / 60000);
+    remaining %= 60000;
+    const seconds = Math.floor(remaining / 1000);
+
+    document.getElementById(prefix + "-days").textContent = days.toLocaleString("pl-PL");
+    const values = [hours, minutes, seconds];
+    document.querySelectorAll("#" + prefix + "-time .value").forEach((element, index) => {
+      element.textContent = String(values[index]).padStart(2, "0");
+    });
+  }
+
+  function refreshCountdowns() {
+    updateCountdown("christmas", "2026-12-24T00:00:00");
+    updateCountdown("newyear", "2027-01-01T00:00:00");
+    updateCountdown("summer", "2027-06-25T00:00:00");
+  }
+
+  refreshCountdowns();
+  setInterval(refreshCountdowns, 1000);
 </script>
 </body>
 </html>
